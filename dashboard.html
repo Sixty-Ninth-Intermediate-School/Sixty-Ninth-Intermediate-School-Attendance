@@ -91,10 +91,17 @@
 <div class="shell">
 
   <div class="letterhead">
-    <div class="emblem">٦٩</div>
-    <div class="kicker">المملكة العربية السعودية · وزارة التعليم</div>
-    <h1>المتوسطة التاسعة والستون</h1>
-    <p>لوحة متابعة الموجهة الطلابية — خاص، غير مخصص لأولياء الأمور</p>
+    <div class="letterhead-row">
+      <div class="logo-slot">
+        <img src="moe-logo.png" alt="شعار وزارة التعليم" onerror="this.style.display='none'; this.parentElement.classList.add('logo-missing');" />
+        <span class="logo-fallback">شعار الوزارة</span>
+      </div>
+      <div class="letterhead-text">
+        <div class="kicker">المملكة العربية السعودية · وزارة التعليم</div>
+        <h1>المتوسطة التاسعة والستون</h1>
+        <p>لوحة متابعة الموجهة الطلابية — خاص، غير مخصص لأولياء الأمور</p>
+      </div>
+    </div>
   </div>
 
   <!-- ACCESS GATE -->
@@ -163,11 +170,13 @@
     </div>
   </div>
 
+  <p class="credit-line">تصميم النظام وإعداده: حياة الحربي — الموجهة الطلابية</p>
+
 </div>
 
 <script>
   // ============ CONFIG ============
-  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxj8GtIy96uyQXQr7Tuo2V0wH-T6VOA3UDwY5NBg6GRY1UolQb5_EmwdUU9R2iQMXGB/exec";
+  const APPS_SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
   // =================================
 
   let ACCESS_KEY = '';
