@@ -5,7 +5,7 @@
  */
 
 // غيّري هذا الرمز إلى رمز سري من اختيارك — هو نفسه "رمز الدخول" الذي تدخلينه في لوحة المتابعة
-const ACCESS_KEY = 'CHANGE_THIS_SECRET_KEY';
+const ACCESS_KEY = 'hayat69school';
 
 const SHEET_NAME = 'Responses';
 const DRIVE_FOLDER_NAME = 'مرفقات غياب الطالبات';
