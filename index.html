@@ -1,0 +1,176 @@
+<!doctype html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>تسجيل غياب — المتوسطة التاسعة والستون</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="shell">
+
+  <div class="letterhead">
+    <div class="emblem">٦٩</div>
+    <div class="kicker">المملكة العربية السعودية · وزارة التعليم</div>
+    <h1>المتوسطة التاسعة والستون</h1>
+    <p>نظام حصر ومتابعة غياب الطالبات — تسجيل حالة</p>
+  </div>
+
+  <div class="card">
+    <p class="card-title">تسجيل حالة غياب أو تأخر</p>
+    <p class="card-sub">يُستخدم هذا النموذج من قِبل ولي أمر الطالبة لتسجيل حالة الغياب أو التأخر أو الخروج المبكر. تصل البيانات مباشرة إلى الموجهة الطلابية لمتابعتها.</p>
+
+    <form id="absenceForm">
+      <div class="grid-2">
+        <div class="field">
+          <label>التاريخ <span class="req">*</span></label>
+          <input type="date" id="f-date" required />
+        </div>
+        <div class="field">
+          <label>الصف <span class="req">*</span></label>
+          <select id="f-grade" required>
+            <option value="" disabled selected>-- اختيار الصف --</option>
+            <option>الأول متوسط</option>
+            <option>الثاني متوسط</option>
+            <option>الثالث متوسط</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label>الفصل <span class="req">*</span></label>
+          <input type="text" id="f-section" placeholder="مثال: ٢ أو أ" required />
+        </div>
+        <div class="field">
+          <label>اسم الطالبة <span class="req">*</span></label>
+          <input type="text" id="f-name" placeholder="الاسم الكامل" required />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>نوع الحالة <span class="req">*</span></label>
+        <div class="radio-row" id="f-type-group">
+          <label class="radio-chip"><input type="radio" name="f-type" value="غياب" required> غياب</label>
+          <label class="radio-chip"><input type="radio" name="f-type" value="تأخر"> تأخر</label>
+          <label class="radio-chip"><input type="radio" name="f-type" value="خروج مبكر"> خروج مبكر</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>سبب الحالة <span class="req">*</span></label>
+        <input type="text" id="f-reason" placeholder="بيان مختصر لسبب الغياب أو التأخر" required />
+      </div>
+
+      <div class="field">
+        <label>إرفاق مستند داعم (اختياري)</label>
+        <div class="hint">مثل صورة موعد مستشفى أو لقطة شاشة من تطبيق صحتي</div>
+        <input type="file" id="f-file" accept="image/*,.pdf" />
+      </div>
+
+      <button type="submit" class="btn btn-primary" id="submitBtn">تسجيل الحالة</button>
+      <div class="msg" id="formMsg"></div>
+    </form>
+  </div>
+
+  <p class="footer-note">تُستخدم هذه البيانات لأغراض المتابعة المدرسية فقط، وتصل مباشرة إلى الموجهة الطلابية.</p>
+
+</div>
+
+<script>
+  // ============ CONFIG ============
+  // ضع هنا رابط تطبيق ويب Apps Script بعد نشره (انظر ملف README).
+  const APPS_SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+  // =================================
+
+  document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
+
+  document.querySelectorAll('.radio-chip').forEach(chip => {
+    const input = chip.querySelector('input');
+    input.addEventListener('change', () => {
+      document.querySelectorAll(`input[name="${input.name}"]`).forEach(i => {
+        i.closest('.radio-chip').classList.toggle('checked', i.checked);
+      });
+    });
+  });
+
+  function fileToBase64(file){
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = () => reject(new Error('تعذّرت قراءة الملف'));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  const form = document.getElementById('absenceForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const formMsg = document.getElementById('formMsg');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    formMsg.className = 'msg';
+
+    if(APPS_SCRIPT_URL.indexOf('PASTE_YOUR') === 0){
+      formMsg.textContent = 'لم يتم ربط النموذج بعد بمصدر البيانات. راجع ملف README لإكمال الإعداد.';
+      formMsg.classList.add('show','err');
+      return;
+    }
+
+    const type = form.querySelector('input[name="f-type"]:checked');
+    if(!type){
+      formMsg.textContent = 'يرجى اختيار نوع الحالة.';
+      formMsg.classList.add('show','err');
+      return;
+    }
+
+    const payload = {
+      date: document.getElementById('f-date').value,
+      grade: document.getElementById('f-grade').value,
+      section: document.getElementById('f-section').value.trim(),
+      studentName: document.getElementById('f-name').value.trim(),
+      type: type.value,
+      reason: document.getElementById('f-reason').value.trim(),
+      fileBase64: '', fileName: '', fileMime: ''
+    };
+
+    const fileInput = document.getElementById('f-file');
+    if(fileInput.files && fileInput.files[0]){
+      try{
+        const file = fileInput.files[0];
+        payload.fileBase64 = await fileToBase64(file);
+        payload.fileName = file.name;
+        payload.fileMime = file.type || 'application/octet-stream';
+      }catch(err){
+        formMsg.textContent = 'تعذّرت قراءة الملف المرفق، حاول مرة أخرى أو تابع بدون إرفاق.';
+        formMsg.classList.add('show','err');
+        return;
+      }
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'جارٍ الحفظ...';
+
+    try{
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
+      formMsg.textContent = 'تم تسجيل الحالة بنجاح. شكرًا للتعاون.';
+      formMsg.classList.add('show','ok');
+      form.reset();
+      document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
+      document.querySelectorAll('.radio-chip').forEach(c => c.classList.remove('checked'));
+    }catch(err){
+      formMsg.textContent = 'تعذّر إرسال البيانات. يرجى التحقق من الاتصال والمحاولة مرة أخرى.';
+      formMsg.classList.add('show','err');
+    }finally{
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'تسجيل الحالة';
+    }
+  });
+</script>
+</body>
+</html>
