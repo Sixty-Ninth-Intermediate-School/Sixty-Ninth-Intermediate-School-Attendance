@@ -27,7 +27,7 @@
 
   .empty-state{
     text-align:center; padding:44px 20px; color:var(--ink-soft);
-    background: repeating-linear-gradient(var(--paper), var(--paper) 27px, #F1EEE1 28px);
+    background: repeating-linear-gradient(var(--paper), var(--paper) 27px, #EEF6F3 28px);
     border:1px dashed var(--line); border-radius:14px;
   }
   .empty-state .big{ font-size:15px; font-weight:800; color:var(--forest-900); margin-bottom:6px; }
@@ -49,16 +49,22 @@
   .status-badge.r{ background:var(--red-bg); color:var(--red); }
 
   .counts-row{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
-  .count-pill{ font-size:11.5px; background:#F5F2E7; border:1px solid var(--line); padding:4px 10px; border-radius:999px; color:var(--ink-soft); }
+  .count-pill{ font-size:11.5px; background:#EFF6F3; border:1px solid var(--line); padding:4px 10px; border-radius:999px; color:var(--ink-soft); }
   .count-pill b{ color:var(--ink); }
 
   .details-panel{ display:none; margin-top:12px; padding-top:12px; border-top:1px dashed var(--line); }
   .details-panel.open{ display:block; }
-  .history-item{ font-size:12px; padding:8px 0; border-bottom:1px solid #F1EEE1; }
+  .history-item{ font-size:12px; padding:8px 0; border-bottom:1px solid #EEF3F1; }
   .history-item:last-child{ border-bottom:none; }
-  .history-item .h-top{ display:flex; justify-content:space-between; font-weight:700; }
+  .history-item .h-top{ display:flex; justify-content:space-between; align-items:center; font-weight:700; }
+  .history-item .h-actions{ display:flex; align-items:center; gap:8px; font-weight:400; }
   .history-item .h-reason{ color:var(--ink-soft); margin-top:2px; }
   .history-item a{ color:var(--forest-500); font-weight:700; }
+  .delete-btn{
+    font-family:inherit; font-size:10.5px; color:var(--red); background:none;
+    border:1px solid var(--red-bg); padding:3px 9px; border-radius:999px; cursor:pointer;
+  }
+  .delete-btn:hover{ background:var(--red-bg); }
 
   .toggle-caret{ font-size:11px; color:var(--ink-soft); margin-inline-start:6px; }
   .section-title{ font-size:13px; font-weight:800; color:var(--forest-900); margin:24px 0 10px; }
@@ -66,7 +72,7 @@
   .class-bars{ display:flex; flex-direction:column; gap:8px; }
   .class-bar-row{ display:flex; align-items:center; gap:10px; font-size:12.5px; }
   .class-bar-label{ width:130px; flex-shrink:0; color:var(--ink-soft); }
-  .class-bar-track{ flex:1; background:#F1EEE1; border-radius:6px; height:10px; overflow:hidden; }
+  .class-bar-track{ flex:1; background:#EEF3F1; border-radius:6px; height:10px; overflow:hidden; }
   .class-bar-fill{ height:100%; background:var(--gold); border-radius:6px; }
   .class-bar-count{ width:22px; text-align:left; font-weight:700; }
 
@@ -79,7 +85,6 @@
   .confirm-yes{ background:var(--red); color:#fff; }
   .confirm-no{ background:#fff; border:1px solid var(--line) !important; color:var(--ink); }
 
-  /* Gate */
   .gate{ max-width:360px; margin: 60px auto; text-align:center; }
   .gate .field{ text-align:right; }
   .gate-msg{ font-size:12.5px; color:var(--red); margin-top:10px; display:none; }
@@ -104,7 +109,6 @@
     </div>
   </div>
 
-  <!-- ACCESS GATE -->
   <div class="card gate" id="gateCard">
     <p class="card-title">الدخول إلى لوحة المتابعة</p>
     <p class="card-sub">هذه الصفحة مخصصة للموجهة الطلابية فقط. يرجى إدخال رمز الدخول.</p>
@@ -116,21 +120,20 @@
     <div class="gate-msg" id="gateMsg">رمز الدخول غير صحيح، يرجى المحاولة مرة أخرى.</div>
   </div>
 
-  <!-- DASHBOARD -->
   <div id="dashboardWrap" class="hidden">
 
     <div class="stats-grid" id="statsGrid">
-      <div class="stat-card"><div class="value">—</div><div class="label">حالات اليوم</div></div>
-      <div class="stat-card"><div class="value">—</div><div class="label">هذا الأسبوع</div></div>
-      <div class="stat-card"><div class="value">—</div><div class="label">هذا الشهر</div></div>
+      <div class="stat-card"><div class="value">—</div><div class="label">غياب اليوم</div></div>
+      <div class="stat-card"><div class="value">—</div><div class="label">غياب هذا الأسبوع</div></div>
+      <div class="stat-card"><div class="value">—</div><div class="label">غياب هذا الشهر</div></div>
       <div class="stat-card"><div class="value">—</div><div class="label">إجمالي الطالبات المسجَّلات</div></div>
     </div>
 
     <div class="legend">
-      <span class="legend-item"><span class="dot g"></span> متابعة عادية</span>
-      <span class="legend-item"><span class="dot y"></span> تحتاج انتباهًا</span>
-      <span class="legend-item"><span class="dot o"></span> تحتاج متابعة من الموجهة</span>
-      <span class="legend-item"><span class="dot r"></span> تحتاج إجراء عاجل</span>
+      <span class="legend-item"><span class="dot g"></span> متابعة عادية (١–٢ يوم)</span>
+      <span class="legend-item"><span class="dot y"></span> تحتاج انتباهًا (٣–٤ أيام)</span>
+      <span class="legend-item"><span class="dot o"></span> تحتاج متابعة من الموجهة (٥–٩ أيام)</span>
+      <span class="legend-item"><span class="dot r"></span> تحتاج إجراء عاجل (١٠ أيام فأكثر)</span>
     </div>
 
     <div class="filters-row">
@@ -175,9 +178,7 @@
 </div>
 
 <script>
-  // ============ CONFIG ============
   const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxj8GtIy96uyQXQr7Tuo2V0wH-T6VOA3UDwY5NBg6GRY1UolQb5_EmwdUU9R2iQMXGB/exec";
-  // =================================
 
   let ACCESS_KEY = '';
   let allRecords = [];
@@ -211,10 +212,10 @@
     return Math.floor((new Date() - new Date(dateStr)) / 86400000);
   }
 
-  function statusFor(undocumented, total){
-    if(undocumented >= 6 || total >= 10) return { level:'r', label:'تحتاج إجراء عاجل', color:'var(--red)' };
-    if(undocumented >= 4 || total >= 7)  return { level:'o', label:'تحتاج متابعة من الموجهة', color:'var(--orange)' };
-    if(undocumented >= 2 || total >= 4)  return { level:'y', label:'تحتاج انتباهًا', color:'var(--yellow)' };
+  function statusFor(total){
+    if(total >= 10) return { level:'r', label:'تحتاج إجراء عاجل', color:'var(--red)' };
+    if(total >= 5)  return { level:'o', label:'تحتاج متابعة من الموجهة', color:'var(--orange)' };
+    if(total >= 3)  return { level:'y', label:'تحتاج انتباهًا', color:'var(--yellow)' };
     return { level:'g', label:'متابعة عادية', color:'var(--green)' };
   }
 
@@ -226,22 +227,17 @@
       map[key].items.push(r);
     });
     return Object.values(map).map(s => {
-      const absences = s.items.filter(i => i.type === 'غياب');
-      const documented = absences.filter(i => i.fileUrl);
-      const undocumented = absences.filter(i => !i.fileUrl);
-      const late = s.items.filter(i => i.type === 'تأخر');
-      const early = s.items.filter(i => i.type === 'خروج مبكر');
+      const documented = s.items.filter(i => i.fileUrl);
+      const undocumented = s.items.filter(i => !i.fileUrl);
       const sorted = [...s.items].sort((a,b) => new Date(b.date) - new Date(a.date));
       return {
         ...s,
-        totalAbsences: absences.length,
+        totalAbsences: s.items.length,
         documentedCount: documented.length,
         undocumentedCount: undocumented.length,
-        lateCount: late.length,
-        earlyCount: early.length,
         lastDate: sorted[0] ? sorted[0].date : null,
         history: sorted,
-        status: statusFor(undocumented.length, absences.length)
+        status: statusFor(s.items.length)
       };
     });
   }
@@ -261,7 +257,7 @@
 
   function renderClassBars(records){
     const counts = {};
-    records.filter(r => r.type === 'غياب').forEach(r => {
+    records.forEach(r => {
       const key = r.grade + ' - فصل ' + r.section;
       counts[key] = (counts[key] || 0) + 1;
     });
@@ -301,7 +297,7 @@
     if(search) students = students.filter(s => s.studentName.includes(search));
     if(gradeFilter) students = students.filter(s => s.grade === gradeFilter);
     if(statusFilterVal) students = students.filter(s => s.status.level === statusFilterVal);
-    students.sort((a,b) => b.undocumentedCount - a.undocumentedCount);
+    students.sort((a,b) => b.totalAbsences - a.totalAbsences);
 
     if(students.length === 0){
       dashBody.innerHTML = `<div class="empty-state"><div class="big">لا نتائج مطابقة</div><div>يمكن تعديل البحث أو الفلاتر.</div></div>`;
@@ -318,15 +314,20 @@
           <div class="status-badge ${s.status.level}">${s.status.label}<span class="toggle-caret">▾</span></div>
         </div>
         <div class="counts-row">
+          <span class="count-pill">إجمالي الغياب: <b>${s.totalAbsences}</b></span>
           <span class="count-pill">موثّق بمرفق: <b>${s.documentedCount}</b></span>
           <span class="count-pill">بدون مرفق: <b>${s.undocumentedCount}</b></span>
-          <span class="count-pill">تأخر: <b>${s.lateCount}</b></span>
-          <span class="count-pill">خروج مبكر: <b>${s.earlyCount}</b></span>
         </div>
         <div class="details-panel" id="details-${idx}">
           ${s.history.map(h => `
             <div class="history-item">
-              <div class="h-top"><span>${h.date} — ${h.type}</span>${h.fileUrl ? `<a href="${h.fileUrl}" target="_blank" rel="noopener">عرض المرفق</a>` : ''}</div>
+              <div class="h-top">
+                <span>${h.date}</span>
+                <span class="h-actions">
+                  ${h.fileUrl ? `<a href="${h.fileUrl}" target="_blank" rel="noopener">عرض المرفق</a>` : ''}
+                  <button class="delete-btn" onclick="deleteRecord('${h.id}')">حذف</button>
+                </span>
+              </div>
               <div class="h-reason">${escapeHtml(h.reason)}</div>
             </div>`).join('')}
         </div>
@@ -339,6 +340,26 @@
   }
   window.toggleDetails = toggleDetails;
 
+  async function deleteRecord(id){
+    if(!confirm('هل تريدين حذف هذا التسجيل؟ لا يمكن التراجع عن هذا الإجراء.')) return;
+    try{
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'delete', key: ACCESS_KEY, id })
+      });
+      const result = await res.json();
+      if(result.status === 'ok'){
+        loadDashboard(ACCESS_KEY);
+      }else{
+        alert('تعذّر حذف التسجيل، يرجى المحاولة مرة أخرى.');
+      }
+    }catch(e){
+      alert('تعذّر حذف التسجيل، يرجى التحقق من الاتصال.');
+    }
+  }
+  window.deleteRecord = deleteRecord;
+
   async function loadDashboard(pin){
     try{
       const url = APPS_SCRIPT_URL + '?key=' + encodeURIComponent(pin);
@@ -346,7 +367,6 @@
       const data = await res.json();
       if(data.status !== 'ok') return false;
       allRecords = data.records || [];
-      document.getElementById('dashBody')?.querySelector('.loading');
       renderStats(allRecords);
       renderClassBars(allRecords);
       renderStudentList();
