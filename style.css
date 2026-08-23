@@ -24,7 +24,8 @@
 html,body{ margin:0; padding:0; }
 body{
   font-family:'Tajawal','Segoe UI',Tahoma,sans-serif;
-  background: var(--bg);
+  background: linear-gradient(180deg, #E9F7F1 0%, #F1FAF7 32%, #FFFFFF 78%);
+  background-attachment: fixed;
   color: var(--ink);
   min-height:100vh;
 }
@@ -37,15 +38,6 @@ body{
   border-bottom: 2px solid var(--forest-700);
   margin-bottom: 30px;
   position: relative;
-  overflow: hidden;
-}
-.letterhead::before{
-  content:'';
-  position:absolute; top:-18px; left:-18px; width:150px; height:110px;
-  background-image: radial-gradient(circle, var(--forest-500) 3.5px, transparent 4.5px);
-  background-size: 20px 20px;
-  opacity:.14;
-  pointer-events:none;
 }
 .letterhead::after{
   content:'';

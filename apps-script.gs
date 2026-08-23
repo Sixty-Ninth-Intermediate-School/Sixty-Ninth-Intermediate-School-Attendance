@@ -48,8 +48,8 @@ function doPost(e) {
     // منع تسجيل نفس الغياب مرتين لنفس الطالبة في نفس التاريخ
     const existingRows = sheet.getDataRange().getValues().slice(1);
     const isDuplicate = existingRows.some(r =>
-      r[4] === data.studentName && r[2] === data.grade &&
-      r[3] === data.section && String(r[1]) === String(data.date)
+      r[4] === data.studentName && String(r[2]) === String(data.grade) &&
+      String(r[3]) === String(data.section) && String(r[1]) === String(data.date)
     );
     if (isDuplicate) {
       return jsonResponse({ status: 'duplicate' });
@@ -76,9 +76,11 @@ function doPost(e) {
       id
     ]);
 
-    // تثبيت خانة التاريخ كنص صريح، لمنع Google Sheets من تحويلها تلقائيًا إلى تاريخ/وقت
+    // تثبيت التاريخ والفصل كنص صريح، لمنع Google Sheets من تحويلهما تلقائيًا
+    // (الفصل قيمته رقم مفرد مثل "١" ويحوّله Sheets تلقائيًا إلى رقم فعلي، ما يكسر أي مقارنة نصية لاحقة)
     const lastRow = sheet.getLastRow();
     sheet.getRange(lastRow, 2).setNumberFormat('@STRING@').setValue(data.date || '');
+    sheet.getRange(lastRow, 4).setNumberFormat('@STRING@').setValue(data.section || '');
 
     // إعادة الحساب بعد الإضافة، وإرسال تنبيه إذا كانت هذه أول مرة تصل الطالبة للحالة الحمراء (١٠ أيام غياب فأكثر)
     const after = getStudentStats(sheet, data.studentName, data.grade, data.section);
@@ -115,7 +117,7 @@ function doGet(e) {
 function getStudentStats(sheet, studentName, grade, section) {
   const values = sheet.getDataRange().getValues();
   const rows = values.slice(1).filter(r =>
-    r[4] === studentName && r[2] === grade && r[3] === section
+    r[4] === studentName && String(r[2]) === String(grade) && String(r[3]) === String(section)
   );
   const total = rows.length;
   const undocumented = rows.filter(r => !r[6]).length;
