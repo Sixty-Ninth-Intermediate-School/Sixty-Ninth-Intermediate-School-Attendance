@@ -13,6 +13,7 @@
 - تسجيل الغياب: `https://sixty-ninth-intermediate-school.github.io/Sixty-Ninth-Intermediate-School-Attendance/`
 - لوحة المتابعة: `https://sixty-ninth-intermediate-school.github.io/Sixty-Ninth-Intermediate-School-Attendance/dashboard.html`
 - رمز الدخول: `hayat69school`
+- رابط Apps Script: https://script.google.com/macros/s/AKfycbzVQhFoYQvg_ULKXIRxBsq8lGuLXpgWBrLrl78GlAzKvBGScfsbYnF9JaGDV1tPlzTi/exec
 
 ## عند رفع هذا التحديث — خطوتان ضروريتان
 
