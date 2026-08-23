@@ -54,10 +54,11 @@ body{
   display:flex; align-items:center; gap:18px;
 }
 .logo-slot{
-  height:38px; width:auto; max-width:130px; flex-shrink:0;
+  height:44px; width:auto; max-width:140px; flex-shrink:0;
   display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
 }
-.logo-slot img{ height:100%; width:auto; max-width:130px; object-fit:contain; }
+.logo-slot img{ max-height:100%; max-width:100%; width:auto; height:auto; object-fit:contain; }
 .logo-fallback{
   display:none; font-size:9px; line-height:1.4; text-align:center;
   color: var(--ink-soft); border:1px dashed var(--line); border-radius:8px;
@@ -139,6 +140,26 @@ body{
   box-shadow: 0 0 0 3px var(--forest-050);
 }
 .field textarea{ resize:vertical; min-height:70px; font-family:inherit; }
+
+/* iOS/Safari renders the native date value with its own font-size and
+   left-aligned, ignoring the input's CSS font-size — this brings it back
+   in line with the other fields. */
+.field input[type=date]{
+  -webkit-appearance: none;
+  appearance: none;
+}
+.field input[type=date]::-webkit-datetime-edit{
+  font-family: inherit;
+  font-size: 13.5px;
+  color: var(--ink);
+}
+.field input[type=date]::-webkit-date-and-time-value{
+  text-align: right;
+  margin: 0;
+}
+.field input[type=date]::-webkit-datetime-edit-fields-wrapper{
+  direction: ltr;
+}
 
 .field input[type=file]{
   font-family:inherit; font-size:12.5px; padding:9px 10px;
