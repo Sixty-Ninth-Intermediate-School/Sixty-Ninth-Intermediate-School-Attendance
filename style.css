@@ -54,11 +54,10 @@ body{
   display:flex; align-items:center; gap:18px;
 }
 .logo-slot{
-  height:44px; width:auto; max-width:140px; flex-shrink:0;
+  height:38px; width:auto; max-width:130px; flex-shrink:0;
   display:flex; align-items:center; justify-content:center;
-  overflow:hidden;
 }
-.logo-slot img{ max-height:100%; max-width:100%; width:auto; height:auto; object-fit:contain; }
+.logo-slot img{ height:100%; width:auto; max-width:130px; object-fit:contain; }
 .logo-fallback{
   display:none; font-size:9px; line-height:1.4; text-align:center;
   color: var(--ink-soft); border:1px dashed var(--line); border-radius:8px;
@@ -89,6 +88,28 @@ body{
   text-align:center; font-size:8px; color: var(--ink-soft);
   opacity:.7; margin-top:6px; padding-top:8px; border-top:1px dashed var(--line);
 }
+
+/* ---------- Banner / Announcement ---------- */
+.banner{
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  box-shadow: 0 2px 4px rgba(10,61,51,0.06), 0 16px 36px rgba(10,61,51,0.10);
+  margin-bottom: 18px;
+}
+.banner img{ display:block; width:100%; height:auto; }
+.banner-fallback{
+  display:none; padding: 26px 16px; text-align:center;
+  font-size:12.5px; line-height:1.8; color: var(--ink-soft);
+  border:1px dashed var(--line); border-radius:14px; background:#FBFEFD;
+}
+.banner-fallback code{
+  background: var(--forest-050); color: var(--forest-900);
+  padding:2px 7px; border-radius:6px; font-family:inherit; font-weight:700;
+}
+.banner-missing .banner-fallback{ display:block; }
+.banner-missing img{ display:none; }
 
 /* ---------- Card ---------- */
 .card{
@@ -140,26 +161,6 @@ body{
   box-shadow: 0 0 0 3px var(--forest-050);
 }
 .field textarea{ resize:vertical; min-height:70px; font-family:inherit; }
-
-/* iOS/Safari renders the native date value with its own font-size and
-   left-aligned, ignoring the input's CSS font-size — this brings it back
-   in line with the other fields. */
-.field input[type=date]{
-  -webkit-appearance: none;
-  appearance: none;
-}
-.field input[type=date]::-webkit-datetime-edit{
-  font-family: inherit;
-  font-size: 13.5px;
-  color: var(--ink);
-}
-.field input[type=date]::-webkit-date-and-time-value{
-  text-align: right;
-  margin: 0;
-}
-.field input[type=date]::-webkit-datetime-edit-fields-wrapper{
-  direction: ltr;
-}
 
 .field input[type=file]{
   font-family:inherit; font-size:12.5px; padding:9px 10px;
