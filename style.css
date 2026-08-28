@@ -145,9 +145,59 @@ body{
   width:100%; min-width:0; box-sizing:border-box;
   -webkit-appearance:none; appearance:none;
 }
-.field input[type=date]{
-  max-width:100%;
+.field input:disabled{ opacity:.6; cursor:not-allowed; }
+
+/* ---------- Date field (custom display) ----------
+   iOS/Android render the native date value with their own font size,
+   alignment and formatting, ignoring our CSS. Rather than fighting that
+   (which breaks again on OS updates), we keep the native <input type=date>
+   fully functional but invisible, and show our own styled text on top —
+   this looks and behaves identically on every device. */
+.date-wrap{ position:relative; }
+.date-wrap input[type=date]{
+  position:relative; z-index:1; max-width:100%;
+  background:transparent;
+  color:transparent; -webkit-text-fill-color:transparent;
+  cursor:pointer;
 }
+.date-wrap input[type=date]::-webkit-datetime-edit{ color:transparent; -webkit-text-fill-color:transparent; }
+.date-wrap input[type=date]::-webkit-calendar-picker-indicator{
+  position:absolute; inset:0; width:100%; height:100%; margin:0; padding:0;
+  opacity:0; cursor:pointer;
+}
+.date-display{
+  position:absolute; inset:0; z-index:0;
+  display:flex; align-items:center; justify-content:flex-end;
+  padding:11px 13px; padding-left:36px;
+  border-radius:9px; background-color:#FBFEFD;
+  font-family:inherit; font-size:13.5px; color: var(--ink);
+  pointer-events:none; white-space:nowrap; overflow:hidden;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='%23128C74' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='5' width='18' height='16' rx='2'/><path d='M16 3v4M8 3v4M3 10h18'/></svg>");
+  background-repeat:no-repeat;
+  background-position: left 13px center;
+}
+
+/* ---------- Name field (searchable autocomplete) ---------- */
+.autocomplete-wrap{ position:relative; }
+.autocomplete-list{
+  position:absolute; z-index:20; top:calc(100% + 6px); right:0; left:0;
+  margin:0; padding:6px; list-style:none;
+  max-height:230px; overflow-y:auto;
+  background:var(--paper); border:1px solid var(--line); border-radius:10px;
+  box-shadow: 0 6px 20px rgba(10,61,51,0.14);
+}
+.autocomplete-list li{
+  padding:9px 11px; border-radius:7px; font-size:13.5px;
+  color:var(--ink); cursor:pointer;
+}
+.autocomplete-list li:hover, .autocomplete-list li.active{
+  background: var(--forest-050); color: var(--forest-900); font-weight:700;
+}
+.autocomplete-list li.autocomplete-empty{
+  color: var(--ink-soft); cursor:default; text-align:center;
+}
+.autocomplete-list li.autocomplete-empty:hover{ background:transparent; font-weight:400; }
+
 .field select{
   appearance:none; -webkit-appearance:none; -moz-appearance:none;
   cursor:pointer;
